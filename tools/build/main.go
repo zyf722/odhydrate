@@ -272,16 +272,17 @@ func publishRelease(root, tag string) error {
 			return fmt.Errorf("release asset %s: %w", path, err)
 		}
 	}
+	target, err := commandOutput(root, "git", "rev-parse", "HEAD")
+	if err != nil {
+		return err
+	}
 	return run(root, nil, "gh", "release", "create", tag, archive, checksums,
-		"--verify-tag", "--generate-notes", "--title", "odhydrate "+tag)
+		"--target", target, "--generate-notes", "--title", "odhydrate "+tag)
 }
 
-func validateTag(root, tag string) (string, error) {
+func validateTag(_ string, tag string) (string, error) {
 	if !semanticTag.MatchString(tag) {
 		return "", fmt.Errorf("expected a semantic-version tag such as v0.1.0; got %q", tag)
-	}
-	if err := run(root, nil, "git", "rev-parse", "--verify", "refs/tags/"+tag+"^{commit}"); err != nil {
-		return "", err
 	}
 	return strings.TrimPrefix(tag, "v"), nil
 }
@@ -365,6 +366,16 @@ func run(root string, overrides map[string]string, name string, args ...string) 
 		return fmt.Errorf("%s: %w", name, err)
 	}
 	return nil
+}
+
+func commandOutput(root, name string, args ...string) (string, error) {
+	cmd := exec.Command(name, args...)
+	cmd.Dir = root
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("%s: %w\n%s", name, err, output)
+	}
+	return strings.TrimSpace(string(output)), nil
 }
 
 func environment(overrides map[string]string) []string {

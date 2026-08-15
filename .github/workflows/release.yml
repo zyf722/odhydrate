@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing semantic-version tag to release (for example, v0.1.0)
+        description: Semantic-version tag to create (for example, v0.1.0)
         required: true
         type: string
 
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-go@v5
         with:
