@@ -150,10 +150,6 @@ release <tag>        Create the release ZIP and SHA256SUMS.txt
 publish <tag>        Publish prepared assets through the GitHub CLI
 ```
 
-For CI, `release` and `publish` may read the tag from the `TAG` environment variable instead of a positional argument.
-
-The release workflow accepts semantic-version tags such as `v0.1.0`, builds the Windows amd64 archive, generates `SHA256SUMS.txt`, and publishes a GitHub Release. It may be triggered by pushing the tag or manually for an existing tag that has not yet been released.
-
 ## Technical basis
 
 Microsoft documents that:

@@ -150,10 +150,6 @@ release <tag>        创建 Release ZIP 和 SHA256SUMS.txt
 publish <tag>        通过 GitHub CLI 发布已准备的产物
 ```
 
-在 CI 中，`release` 和 `publish` 也可以从 `TAG` 环境变量读取标签，无需位置参数。
-
-Release workflow 接受 `v0.1.0` 形式的语义化版本标签，构建 Windows amd64 压缩包、生成 `SHA256SUMS.txt`，并发布 GitHub Release。可以推送标签触发，也可以针对尚未发布 Release 的已有标签手动触发。
-
 ## 技术依据
 
 微软文档说明：
